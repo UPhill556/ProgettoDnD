@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>The Dungeon</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #e8e0d7;
+      background-image: radial-gradient(circle at 10% 20%, rgba(180, 150, 120, 0.08) 2%, transparent 2.5%),
+                        radial-gradient(circle at 80% 70%, rgba(100, 70, 45, 0.05) 1.5%, transparent 2%);
+      background-size: 40px 40px, 32px 32px;
+      font-family: 'Inter', 'Segoe UI', 'Roboto', 'Georgia', serif;
+      color: #2a241f;
+      line-height: 1.5;
+      padding: 2rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* header professionale */
+    .site-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      border-bottom: 2px solid #c9b696;
+      padding-bottom: 1.2rem;
+    }
+
+    .home-link {
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+
+    .home-link:hover {
+      opacity: 0.85;
+    }
+
+    .site-title {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #35281d;
+      font-family: 'Times New Roman', 'Georgia', serif;
+      text-transform: uppercase;
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.05);
+      border-bottom: 1px dotted #cbbdab;
+      display: inline-block;
+      padding-bottom: 0.2rem;
+    }
+
+    .site-sub {
+      font-size: 0.85rem;
+      color: #6b4f38;
+      margin-top: 0.6rem;
+      letter-spacing: 1px;
+      font-weight: 500;
+      font-family: 'Inter', monospace;
+    }
+
+    /* introduzione sobria in stile pergamena */
+    .intro {
+      background: #fdf8f0;
+      border-left: 6px solid #b68b5a;
+      padding: 1.3rem 2rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      font-size: 1rem;
+      color: #2e2a26;
+    }
+
+    .intro p {
+      font-weight: 450;
+    }
+
+    /* griglia progetti */
+    .projects-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.2rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .project-card {
+      flex: 1;
+      min-width: 320px;
+      background: #ffffff;
+      border-radius: 1.2rem;
+      overflow: hidden;
+      transition: all 0.25s ease;
+      box-shadow: 0 12px 28px -12px rgba(0,0,0,0.2);
+      border: 1px solid #dacbbc;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(0px);
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 30px -12px rgba(0,0,0,0.25);
+      border-color: #b58f6b;
+    }
+
+    /* header card */
+    .card-header {
+      background: #faf3ea;
+      padding: 1.5rem 1.8rem 0.8rem;
+      border-bottom: 1px solid #e7d8ca;
+    }
+
+    .project-name {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      color: #3a2a1e;
+      font-family: 'Georgia', 'Times New Roman', serif;
+    }
+
+    /* badge versione o tipo */
+    .badge {
+      display: inline-block;
+      background: #e2d3c4;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      color: #5a3f2a;
+      margin-left: 0.6rem;
+      vertical-align: middle;
+      letter-spacing: 0.3px;
+      font-family: monospace;
+    }
+
+    /* area descrizione */
+    .desc-text {
+      padding: 1.3rem 1.8rem 0.8rem;
+      flex-grow: 1;
+      color: #2c2621;
+      font-size: 0.95rem;
+    }
+
+    .desc-text p {
+      margin-bottom: 0.9rem;
+    }
+
+    .desc-text ul {
+      margin: 0.7rem 0 0 1.2rem;
+      list-style-type: square;
+      color: #6c543d;
+    }
+
+    .desc-text li {
+      margin: 0.3rem 0;
+    }
+
+    /* FEATURE TAGS */
+    .features {
+      background: #fbf6f0;
+      padding: 1rem 1.5rem;
+      margin: 0.5rem 1.2rem 0.8rem 1.2rem;
+      border-radius: 1.2rem;
+      border: 1px solid #efe2d5;
+    }
+
+    .features h4 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #8f6d4c;
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+    }
+
+    .feature-tag {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .feature-tag span {
+      background: white;
+      border-radius: 30px;
+      padding: 0.2rem 0.85rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #735d46;
+      border: 1px solid #e6d5c5;
+    }
+
+    /* PROGRESS BAR - stile pergamena / legno */
+    .progress-section {
+      margin: 0.8rem 1.5rem 1rem 1.5rem;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #6e4f32;
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .progress-bar-bg {
+      background-color: #e3d8ce;
+      border-radius: 40px;
+      height: 8px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .progress-fill {
+      background: #8f694b;
+      width: 0%;
+      height: 100%;
+      border-radius: 40px;
+      transition: width 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    /* footer carta */
+    .footer-note {
+      margin-top: 2.8rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #8b755e;
+      border-top: 1px solid #d8caba;
+      padding-top: 1.8rem;
+      font-family: monospace;
+    }
+
+    /* nota home semplificata: solo tooltip minimale */
+    .home-hint {
+      font-size: 0.7rem;
+      text-align: center;
+      margin-top: 0.4rem;
+      color: #aa8b6b;
+      font-style: normal;
+      letter-spacing: 0.4px;
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 1.2rem;
+      }
+      .site-title {
+        font-size: 2rem;
+      }
+      .project-name {
+        font-size: 1.5rem;
+      }
+      .desc-text {
+        padding: 1rem;
+      }
+      .features {
+        margin: 0.3rem 1rem 0.8rem;
+      }
+      .progress-section {
+        margin: 0.5rem 1rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- header con titolo cliccabile, in stile D&D: nessuna emoji, design essenziale -->
+  <div class="site-header">
+    <a href="#" class="home-link" id="homeLink">
+      <h1 class="site-title">The Dungeon</h1>
+    </a>
+    <div class="site-sub">Strumenti per il DM • Avventure per i Players</div>
+    <div class="home-hint">◈  by Fran  ◈</div>
+  </div>
+
+  <!-- introduzione epica e professionale -->
+  <div class="intro">
+    <p><strong>Due pilastri per il master moderno.</strong> The Dungeon accoglie <strong>D&D Adventurer</strong>, piattaforma unificata per la gestione di campagne, incontri e trame, e <strong>Oneshot Vault</strong>, archivio di 80 moduli autonomi con scansioni complete. Entrambi i progetti rispondono alla necessità di ordine, creatività e prontezza al tavolo — che tu stia preparando un'alleanza complessa o una sessione improvvisata.</p>
+  </div>
+
+  <!-- griglia progetti -->
+  <div class="projects-grid">
+    
+    <!-- PROGETTO 1: D&D Adventurer (completezza 90%) -->
+    <div class="project-card">
+      <div class="card-header">
+        <span class="project-name">D&D Adventurer</span>
+        <span class="badge">Strumenti per il DM</span>
+      </div>
+      <div class="desc-text">
+        <p><strong>D&D Adventurer</strong> è nato dalla passione per i giochi di ruolo e dalla necessità di avere tutti gli strumenti essenziali per un Dungeon Master in un'unica piattaforma. Pensato per DM di ogni livello, giocatori e gruppi che vogliono organizzare al meglio le loro campagne tra appunti, mostri, mappe e combattimenti.</p>
+        <p>L'ecosistema integra un <strong>bestiario dinamico</strong>, una mappa interattiva, un tracker di iniziativa e un sistema di annotazioni narrative. Ogni sessione diventa fluida, ogni incontro memorabile. L'interfaccia modulare permette di personalizzare l'esperienza, dalla gestione dell'inventario fino alle statistiche degli avversari.</p>
+        <ul>
+          <li>Enciclopedia bestiario modificabile e filtri per CR</li>
+          <li>Mappe tattiche con la possibilità di aggiungere token</li>
+          <li>Gestione avanzata combattimenti e condizioni</li>
+          <li>Esportazione appunti e cronache di campagna</li>
+        </ul>
+      </div>
+      <div class="features">
+        <h4>caratteristiche principali</h4>
+        <div class="feature-tag">
+          <span>gestione iniziativa</span>
+          <span>archivio mostri</span>
+          <span>pannello mappe</span>
+          <span>diario campagna</span>
+          <span>generatore incontri</span>
+        </div>
+      </div>
+      <!-- barra di completamento 90% -->
+      <div class="progress-section">
+        <div class="progress-label">
+          <span>stato di sviluppo</span>
+          <span>90%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-fill" style="width: 90%;"></div>
+        </div>
+        <div style="font-size: 0.65rem; color: #846a4f; margin-top: 0.3rem; text-align: right;">versione master · core completo</div>
+      </div>
+    </div>
+    
+    <!-- PROGETTO 2: Oneshot Vault (completezza 15% / fase iniziale di raccolta) -->
+    <div class="project-card">
+      <div class="card-header">
+        <span class="project-name">Oneshot Vault</span>
+        <span class="badge">80 moduli · scansioni</span>
+      </div>
+      <div class="desc-text">
+        <p><strong>Oneshot Vault</strong> è una raccolta curatoriale di <strong>ottanta one shot</strong> complete, bilanciate per livelli da 1 a 20. Ogni modulo include mappe scansionate, schede mostri, antefatti, tesori calibrati e varianti di difficoltà. Pensato per il master che necessita di avventure pronte in meno di 10 minuti o per arricchire una campagna principale con side quest coerenti.</p>
+        <p>Ogni one shot è accompagnata da materiali supplementari: descrizione degli NPC, trappole ambientali e punti di svolta. Le scansioni garantiscono chiarezza visiva e immediatezza durante il gioco. Un progetto ambizioso per creare la più vasta biblioteca di avventure autoconclusive di alta qualità.</p>
+        <ul>
+          <li>Archivio navigabile per livello, ambientazione e durata</li>
+          <li>Scansioni ad alta risoluzione di mappe e schemi</li>
+          <li>Liste tesori e oggetti magici contestuali</li>
+          <li>Adattabilità a qualsiasi mondo di gioco</li>
+        </ul>
+      </div>
+      <div class="features">
+        <h4>contenuti esclusivi</h4>
+        <div class="feature-tag">
+          <span>scansioni originali</span>
+          <span>tabelle incontri</span>
+          <span>antagonisti unici</span>
+          <span>ricompense bilanciate</span>
+        </div>
+      </div>
+      <!-- barra di completamento 35% (fase di raccolta e strutturazione) -->
+      <div class="progress-section">
+        <div class="progress-label">
+          <span>stato di avanzamento</span>
+          <span>35%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-fill" style="width: 35%;"></div>
+        </div>
+        <div style="font-size: 0.65rem; color: #846a4f; margin-top: 0.3rem; text-align: right;">fase di acquisizione e digitalizzazione</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <p>THE DUNGEON · D&D Adventurer e Oneshot Vault · tutti gli strumenti per il tuo tavolo</p>
+  </div>
+</div>
+
+<!-- script semplice per gestire il ritorno "Home" (scroll in cima e ripristino visivo senza ricarica) -->
+<script>
+  (function() {
+    const homeTrigger = document.getElementById('homeLink');
+    if (homeTrigger) {
+      homeTrigger.addEventListener('click', function(event) {
+        event.preventDefault();
+        // scroll fluido verso l'alto
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // effetto leggero sull'intro per segnalare il ritorno alla dashboard
+        const introBlock = document.querySelector('.intro');
+        if (introBlock) {
+          introBlock.style.transition = 'background 0.2s, border-left-color 0.2s';
+          introBlock.style.backgroundColor = '#f9f0e4';
+          introBlock.style.borderLeftColor = '#b87a48';
+          setTimeout(() => {
+            if (introBlock) {
+              introBlock.style.backgroundColor = '';
+              introBlock.style.borderLeftColor = '';
+            }
+          }, 500);
+        }
+        // opzionale: piccolo focus sul titolo
+        const titleEl = document.querySelector('.site-title');
+        if(titleEl) {
+          titleEl.style.opacity = '0.9';
+          setTimeout(() => { if(titleEl) titleEl.style.opacity = '1'; }, 200);
+        }
+      });
+    }
+  })();
+</script>
+</body>
+</html>
